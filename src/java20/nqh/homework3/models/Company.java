@@ -9,11 +9,14 @@ public class Company {
     private List<Revenue> revenues;
     private List<Department> departments;
 
-    public Company(String name, String taxCode, List<Department> departments) {
+    private List<Director> directors;
+
+    public Company(String name, String taxCode, List<Department> departments, List<Director> directors) {
         this.name = name;
         this.taxCode = taxCode;
         this.departments = departments;
         this.revenues = new ArrayList<Revenue>();
+        this.directors = directors;
         this.syncRevenueWithDepartment();
     }
 
@@ -22,6 +25,7 @@ public class Company {
         this.taxCode = "";
         this.departments = new ArrayList<Department>();
         this.revenues = new ArrayList<Revenue>();
+        this.directors = new ArrayList<Director>();
     }
 
     public void syncRevenueWithDepartment() {
@@ -94,6 +98,14 @@ public class Company {
 
     public List<Department> getDepartments() {
         return departments;
+    }
+
+    public List<Director> getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(List<Director> directors) {
+        this.directors = directors;
     }
 
     public void setDepartments(List<Department> departments) {

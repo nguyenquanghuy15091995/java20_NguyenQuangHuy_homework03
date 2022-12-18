@@ -57,4 +57,7 @@ public class FakeData {
             (Manager) this.manager3,
             employees3
     );
+
+    public final Director director1 = new Director(16, "director_1", "Director 1", "0123456789", 40);
+    public final Director director2 = new Director(16, "director_2", "Director 2", "0123456789", 60);
 }
