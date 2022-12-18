@@ -3,18 +3,19 @@ package java20.nqh.homework3.models;
 import java.util.List;
 
 public abstract class Person {
-    protected int id;
     protected String code;
     protected String name;
     protected String phoneNumber;
     protected List<Revenue> salaries;
 
-    public Person(int id, String code, String name, String phoneNumber, List<Revenue> salaries) {
-        this.id = id;
+    protected boolean isDeleted;
+
+    public Person(String code, String name, String phoneNumber, List<Revenue> salaries) {
         this.code = code;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.salaries = salaries;
+        this.isDeleted = false;
     }
 
     protected abstract void addSalary(byte month, int year, double salaryPerDay, double workingDay);
@@ -27,14 +28,6 @@ public abstract class Person {
             }
         }
         return null;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getCode() {
@@ -67,5 +60,13 @@ public abstract class Person {
 
     public void setSalaries(List<Revenue> salaries) {
         this.salaries = salaries;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
 }

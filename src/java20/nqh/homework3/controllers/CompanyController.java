@@ -16,6 +16,7 @@ public class CompanyController {
     public CompanyController() {
         this.company = new Company();
         this.scanner = new Scanner(System.in);
+        this.scanner.useDelimiter("\n");
     }
 
     public void setCompanyInfo() {
@@ -24,77 +25,74 @@ public class CompanyController {
         this.company.setName(this.scanner.next());
         System.out.print("- Company Tax Code: ");
         this.company.setTaxCode(this.scanner.next());
-
-        FakeData fakeData = new FakeData();
-        this.company.setDepartments(new ArrayList<Department>(
-                Arrays.asList(
-                        fakeData.department1,
-                        fakeData.department2,
-                        fakeData.department3
-                )
-        ));
-        this.company.setDirectors(new ArrayList<Director>(
-                Arrays.asList(
-                        fakeData.director1,
-                        fakeData.director2
-                )
-        ));
-    }
-
-    public void setManagerForEmployee() {
-        System.out.println("---Set manager for employee");
-        System.out.println("- Select employee");
-        for (Department department :
-                this.company.getDepartments()) {
-            for (Employee employee :
-                    department.getEmployees()) {
-                System.out.println(employee.getId() + " - " + employee.getName());
-            }
-        }
-        System.out.println("- Employee id: ");
-        int employeeId = this.scanner.nextInt();
-        System.out.println("- Select manager");
-        for (Department department :
-                this.company.getDepartments()) {
-            System.out.println(department.getManager().getId() + " - " + department.getManager().getName());
-        }
-        int managerId = this.scanner.nextInt();
-        this.company.setManagerForEmployee(managerId, employeeId);
-    }
-
-    private List<Person> getPersonList() {
-        List<Person> personsTemp = new ArrayList<Person>();
-        for (Director director :
-                this.company.getDirectors()) {
-            personsTemp.add(director);
-        }
-
-        for (Department department :
-                this.company.getDepartments()) {
-            personsTemp.add(department.getManager());
-            for (Employee employee :
-                    department.getEmployees()) {
-                personsTemp.add(employee);
-            }
-        }
-        return personsTemp;
     }
 
     public void showAllEmployee() {
-        System.out.println("--- Show all Employee");
-        List<Person> personsTemp = this.getPersonList();
-        int counter = 1;
+        System.out.println("---Show all employee information");
         for (Person person:
-                personsTemp) {
-            System.out.println(counter + ". " + person.getName() + " - " + person.getCode() + " - " + person.getPhoneNumber());
-            counter += 1;
+             this.company.getPersonList()) {
+            if(!person.isDeleted()) {
+                if (person instanceof Employee) {
+                    System.out.println(person.getCode() + " - " + person.getName() + " - " + person.getPhoneNumber() + " - Manager: " + ((Employee) person).getManagerCode());
+                } else {
+                    System.out.println(person.getCode() + " - " + person.getName() + " - " + person.getPhoneNumber());
+                }
+            }
+        }
+    }
+
+    public void addNewEmployee() {
+        System.out.println("- Select employee type: ");
+        System.out.println("1. Director");
+        System.out.println("2. Manager");
+        System.out.println("3. Employee");
+        System.out.print("Your choice: ");
+        int selectedType = this.scanner.nextInt();
+
+        System.out.print("Employee code: ");
+        String newCode = this.scanner.next();
+        System.out.print("Employee name: ");
+        String newName = this.scanner.next();
+        System.out.print("Employee phone number: ");
+        String newPhone = this.scanner.next();
+
+        Person newPerson = null;
+        switch (selectedType) {
+            case 1: {
+                System.out.print("Stock: ");
+                double newStock = this.scanner.nextDouble();
+                newPerson = new Director(newCode, newName, newPhone, newStock);
+                break;
+            }
+            case 2: {
+                newPerson = new Manager(newCode, newName, newPhone);
+                break;
+            }
+            case 3: {
+                newPerson = new Employee(newCode, newName, newPhone);
+                break;
+            }
+            default:
+        }
+
+        if (!newPerson.equals(null)) {
+            this.company.addNewPeron(newPerson);
         }
     }
 
     public void deleteEmployee() {
-        System.out.println("--- Delete Employee");
-        System.out.println("Input employee id: ");
+        System.out.print("- Select employee code to deleted: ");
+        String code = this.scanner.next();
+        this.company.deletePerson(code);
+    }
 
+    public void setManagerForEmployee() {
+        System.out.print("- Enter manager code: ");
+        String managerCode = this.scanner.next();
+        System.out.print("- Enter employee code: ");
+        String employeeCode = this.scanner.next();
+
+        this.company.setManagerForEmployee(managerCode, employeeCode);
     }
 
     public void showMenu() {
@@ -116,6 +114,8 @@ public class CompanyController {
         System.out.println("------------------------------------------------");
         System.out.println("Input -1 for exit");
         System.out.println("------------------------------------------------");
+        System.out.println("-----------------");
+        System.out.print("Select your choice: ");
     }
 
     public void runAll() {
@@ -127,6 +127,10 @@ public class CompanyController {
                 this.setCompanyInfo();
             } else if (selection == 2) {
                 this.setManagerForEmployee();
+            } else if (selection == 3) {
+                this.addNewEmployee();
+            } else if (selection == 4) {
+                this.deleteEmployee();
             } else if (selection == 5) {
                 this.showAllEmployee();
             }

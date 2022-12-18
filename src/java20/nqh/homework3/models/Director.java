@@ -6,13 +6,13 @@ import java.util.List;
 public class Director extends Person {
     private double stock;
 
-    public Director(int id, String code, String name, String phoneNumber, List<Revenue> salaries, double stock) {
-        super(id, code, name, phoneNumber, salaries);
+    public Director(String code, String name, String phoneNumber, List<Revenue> salaries, double stock) {
+        super(code, name, phoneNumber, salaries);
         this.stock = stock;
     }
 
-    public Director(int id, String code, String name, String phoneNumber, double stock) {
-        super(id, code, name, phoneNumber, new ArrayList<Revenue>());
+    public Director(String code, String name, String phoneNumber, double stock) {
+        super(code, name, phoneNumber, new ArrayList<Revenue>());
         this.stock = stock;
     }
 
