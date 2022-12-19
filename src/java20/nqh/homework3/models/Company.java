@@ -6,23 +6,13 @@ import java.util.List;
 public class Company {
     private String name;
     private String taxCode;
-    private List<Revenue> revenues;
     private List<Person> personList;
 
 
     public Company() {
         this.name = "";
         this.taxCode = "";
-        this.revenues = new ArrayList<Revenue>();
         this.personList = new ArrayList<Person>();
-    }
-
-    public void syncRevenueWithDepartment() {
-
-    }
-
-    public void setManagerForEmployee(int managerId, int employeeId) {
-
     }
 
     public String getName() {
@@ -39,10 +29,6 @@ public class Company {
 
     public void setTaxCode(String taxCode) {
         this.taxCode = taxCode;
-    }
-
-    public void setRevenues(List<Revenue> revenues) {
-        this.revenues = revenues;
     }
 
     public List<Person> getPersonList() {
@@ -105,5 +91,42 @@ public class Company {
                 }
             }
         }
+    }
+
+    public void addSalaryToPerson(String personCode, byte month, int year, double workingDay) {
+        for (int i = 0; i < this.personList.size(); i += 1) {
+            if (this.personList.get(i).getCode().equals(personCode) && !this.personList.get(i).isDeleted()) {
+                this.personList.get(i).addSalary(month, year, workingDay);
+                break;
+            }
+        }
+    }
+
+    public double showTotalRevenue(byte month, int year) {
+        double revenueValue = 0;
+        for (Person person:
+             this.personList) {
+            if(person.getSalaryByMonth(month, year) != null) {
+                revenueValue += person.getSalaryByMonth(month, year).getCalculatedSalary();
+            }
+        }
+        return revenueValue;
+    }
+
+    public Manager getManagerWithLargestEmpNumber() {
+        Manager managerTemp = null;
+        for (Person person:
+                this.personList) {
+            if(person instanceof Manager) {
+                if (managerTemp == null) {
+                    managerTemp = (Manager) person;
+                } else {
+                    if (managerTemp.getEmployeeNumber() < ((Manager) person).getEmployeeNumber()) {
+                        managerTemp = (Manager) person;
+                    }
+                }
+            }
+        }
+        return managerTemp;
     }
 }

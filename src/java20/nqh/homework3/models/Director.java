@@ -1,5 +1,7 @@
 package java20.nqh.homework3.models;
 
+import java20.nqh.homework3.common.Common;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,9 +19,9 @@ public class Director extends Person {
     }
 
     @Override
-    protected void addSalary(byte month, int year, double salaryPerDay, double workingDay) {
-        double calculatedSalary = salaryPerDay * workingDay;
-        Revenue newSalary = new Revenue(month,  year,  salaryPerDay,  workingDay, calculatedSalary);
+    protected void addSalary(byte month, int year, double workingDay) {
+        double calculatedSalary = Common.SALARY_PER_DAY_DIRECTOR * workingDay;
+        Revenue newSalary = new Revenue(month,  year,  Common.SALARY_PER_DAY_DIRECTOR,  workingDay, calculatedSalary);
         this.salaries.add(newSalary);
     }
 

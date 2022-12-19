@@ -18,7 +18,7 @@ public abstract class Person {
         this.isDeleted = false;
     }
 
-    protected abstract void addSalary(byte month, int year, double salaryPerDay, double workingDay);
+    protected abstract void addSalary(byte month, int year, double workingDay);
 
     public Revenue getSalaryByMonth(byte month, int year) {
         for (Revenue revenueTemp:
